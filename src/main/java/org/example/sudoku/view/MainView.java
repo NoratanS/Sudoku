@@ -2,6 +2,7 @@ package org.example.sudoku.view;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.example.sudoku.controller.SudokuController;
@@ -18,8 +19,10 @@ public class MainView {
 
 
         VBox layout = new VBox(10, boardGrid);
+        VBox.setVgrow(boardGrid, Priority.ALWAYS);
 
-        Scene scene = new Scene(layout);
+        Scene scene = new Scene(layout, 600, 600);
+
         URL cssUrl = getClass().getResource("/org/example/sudoku/styles.css");
         if (cssUrl != null) {
             scene.getStylesheets().add(cssUrl.toExternalForm());
@@ -31,7 +34,6 @@ public class MainView {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Sudoku");
-        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }

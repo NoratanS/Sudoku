@@ -1,8 +1,10 @@
 .grid {
     -fx-background-color: lightgrey;
-    -fx-padding: 10;
-    -fx-hgap: 5;
-    -fx-vgap: 5;
+    -fx-padding: 0;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+    -fx-border-color: gray;
+    -fx-border-width: 2px;
 }
 
 .cell {
@@ -15,4 +17,44 @@
     -fx-background-color: white;
     -fx-border-color: gray;
     -fx-border-width: 1px;
+}
+
+.cell.segment-border-top {
+    -fx-border-width: 2px 1px 1px 1px;
+}
+
+.cell.segment-border-right {
+    -fx-border-width: 1px 2px 1px 1px;
+}
+
+.cell.segment-border-bottom {
+    -fx-border-width: 1px 1px 2px 1px;
+}
+
+.cell.segment-border-left {
+    -fx-border-width: 1px 1px 1px 2px;
+}
+
+.cell.segment-border-top-left-corner {
+    -fx-border-width: 2px 1px 1px 2px;
+}
+
+.cell.segment-border-top-right-corner {
+    -fx-border-width: 2px 2px 1px 1px;
+}
+
+.cell.segment-border-bottom-left-corner {
+    -fx-border-width: 1px 1px 2px 2px;
+}
+
+.cell.segment-border-bottom-right-corner {
+    -fx-border-width: 1px 2px 2px 1px;
+}
+
+.highlighted-cell {
+    -fx-background-color: lightblue;
+}
+
+.selected-cell {
+    -fx-background-color: deepskyblue;
 }
