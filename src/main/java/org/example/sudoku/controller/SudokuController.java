@@ -14,6 +14,7 @@ import java.util.Objects;
 public class SudokuController {
     private SudokuBoard board;
     private GridPane boardGrid;
+    private TextField selectedCell;
 
     public SudokuController(SudokuBoard board, GridPane boardGrid) {
         this.board = board;
@@ -24,24 +25,25 @@ public class SudokuController {
     private void initializeBoard() {
         boardGrid.getStyleClass().add("grid");
 
+        boardGrid.getColumnConstraints().clear();
+        boardGrid.getRowConstraints().clear();
+
         for (int i = 0; i < 9; i++) {
             ColumnConstraints colConstraints = new ColumnConstraints();
-            colConstraints.setPercentWidth(100.0 / 9); // 1/9 szerokości
             colConstraints.setHgrow(Priority.ALWAYS);
             boardGrid.getColumnConstraints().add(colConstraints);
 
             RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setPercentHeight(100.0 / 9); // 1/9 wysokości
             rowConstraints.setVgrow(Priority.ALWAYS);
             boardGrid.getRowConstraints().add(rowConstraints);
         }
 
+        boardGrid.getChildren().clear(); // Usuń stare komórki (ważne przy reload)
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 TextField cellField = new TextField();
                 cellField.getStyleClass().add("cell");
-
                 cellField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
                 int value = board.getCell(row,col).getValue();
@@ -56,12 +58,7 @@ public class SudokuController {
                 int finalRow = row;
                 int finalCol = col;
                 cellField.setOnMouseClicked(event -> {
-                    resetHighlights();
-                    highlightRow(finalRow);
-                    highlightColumn(finalCol);
-                    highlightSegment(finalRow, finalCol);
-                    highlightMatches(cellField.getText());
-                    cellField.getStyleClass().add("selected-cell");
+                    handleCellClick(finalRow, finalCol, cellField);
                 });
 
 
@@ -98,10 +95,9 @@ public class SudokuController {
                 }
 
                 boardGrid.add(cellField, col, row);
-
-
             }
         }
+        resizeBoard();
     }
 
     private void addInputRestriction(TextField cellField) {
@@ -110,6 +106,18 @@ public class SudokuController {
                 cellField.setText(oldValue);
             }
         });
+    }
+
+    public void resizeBoard() {
+        double cellWidth = boardGrid.getWidth() / 9;
+        double cellHeight = boardGrid.getHeight() / 9;
+
+        for (var node : boardGrid.getChildren()) {
+            if (node instanceof TextField) {
+                TextField cellField = (TextField) node;
+                cellField.setPrefSize(cellWidth, cellHeight);
+            }
+        }
     }
 
     private void resetHighlights() {
@@ -156,5 +164,31 @@ public class SudokuController {
                 cellField.getStyleClass().add("selected-cell");
             }
         }
+    }
+
+    public void reloadBoard() {
+        boardGrid.getChildren().clear();
+        initializeBoard();
+        resizeBoard();
+        selectedCell = null;
+    }
+
+    public void setDigit(int digit) {
+        if (selectedCell != null && selectedCell.isEditable()) {
+            selectedCell.setText(String.valueOf(digit));
+            int row = GridPane.getRowIndex(selectedCell);
+            int col = GridPane.getColumnIndex(selectedCell);
+        }
+    }
+
+    private void handleCellClick(int row, int col, TextField cellField) {
+        resetHighlights();
+        highlightRow(row);
+        highlightColumn(col);
+        highlightSegment(row, col);
+        highlightMatches(cellField.getText());
+        cellField.getStyleClass().add("selected-cell");
+
+        selectedCell = cellField;
     }
 }
