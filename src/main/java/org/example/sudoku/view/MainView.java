@@ -7,14 +7,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 import org.example.sudoku.controller.SudokuController;
 import org.example.sudoku.model.SudokuBoard;
+import org.example.sudoku.model.Timer;
+
 
 import java.net.URL;
 
 public class MainView {
     private SudokuController controller;
     private SudokuBoard board;
+    private Timer timer;
 
     public void start(Stage primaryStage) {
         GridPane boardGrid = new GridPane();
@@ -44,6 +48,8 @@ public class MainView {
         primaryStage.setTitle("Sudoku");
         primaryStage.show();
 
+        timer.start();
+
         layout.widthProperty().addListener((obs, oldVal, newVal) -> controller.resizeBoard());
         layout.heightProperty().addListener((obs, oldVal, newVal) -> controller.resizeBoard());
     }
@@ -53,12 +59,19 @@ public class MainView {
         controlPanel.setStyle("-fx-padding: 15; -fx-alignment: top-center;");
         controlPanel.setPrefWidth(150);
 
+        // Timer
+        Label timerLabel = new Label("00:00");
+        timerLabel.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
+        timer = new Timer(timerLabel);
+
         // Przycisk "New Game"
         Button newGameButton = new Button("New Game");
         newGameButton.setMaxWidth(Double.MAX_VALUE);
         newGameButton.setOnAction(e -> {
             board.loadSampleBoard();
             controller.reloadBoard();
+            timer.reset();
+            timer.start();
         });
 
         // Panel cyfr w układzie 3x3
@@ -74,7 +87,7 @@ public class MainView {
             digitPanel.add(digitButton, (i - 1) % 3, (i - 1) / 3);
         }
 
-        controlPanel.getChildren().addAll(newGameButton, digitPanel);
+        controlPanel.getChildren().addAll(timerLabel,newGameButton, digitPanel);
         return controlPanel;
     }
 }

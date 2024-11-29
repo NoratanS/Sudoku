@@ -4,6 +4,7 @@ module org.example.sudoku {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires java.desktop;
 
     opens org.example.sudoku to javafx.fxml;
     exports org.example.sudoku;
