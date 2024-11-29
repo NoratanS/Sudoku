@@ -48,6 +48,8 @@ public class MainView {
         primaryStage.setTitle("Sudoku");
         primaryStage.show();
 
+        timer.start();
+
         layout.widthProperty().addListener((obs, oldVal, newVal) -> controller.resizeBoard());
         layout.heightProperty().addListener((obs, oldVal, newVal) -> controller.resizeBoard());
     }

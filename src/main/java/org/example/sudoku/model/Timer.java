@@ -17,8 +17,6 @@ public class Timer {
         InitializeTimer();
     }
 
-
-
     private void InitializeTimer(){
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             TimeInSecs++;
