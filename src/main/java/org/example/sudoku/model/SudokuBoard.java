@@ -20,7 +20,7 @@ public class SudokuBoard {
     public static SudokuBoard loadSampleBoard() {
         int[][] data;
         try {
-            String filePath = "Sudoku\\src\\main\\resources\\\\org\\example\\sudoku\\sudoku.csv";
+            String filePath = "src/main/resources/org/example/sudoku/sudoku.csv";
             Random rand = new Random();
             int random = rand.nextInt(countLinesInFile(filePath));
             data = readRandomGridFromCsv(filePath, random); // Wczytanie losowego wiersza z pliku
