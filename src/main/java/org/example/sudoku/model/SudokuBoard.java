@@ -3,12 +3,15 @@ import java.io.*;
 import java.util.Random;
 public class SudokuBoard {
     private Cell[][] board;
+    private Cell[][] solutionBoard;
 
-    public SudokuBoard(int[][] initialValues) {
-        board = new Cell[9][9];
+    public SudokuBoard(int[][] initialValues, int[][] solutionBoard) {
+        this.board = new Cell[9][9];
+        this.solutionBoard = new Cell[9][9];
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                board[row][col] = new Cell(initialValues[row][col]);
+                this.board[row][col] = new Cell(initialValues[row][col]);
+                this.solutionBoard[row][col] = new Cell(initialValues[row][col]);
             }
         }
     }
@@ -16,23 +19,27 @@ public class SudokuBoard {
     public Cell getCell(int row, int col) {
         return board[row][col];
     }
+    public Cell getSolutionCell(int row, int col) {
+        return solutionBoard[row][col];
+    }
 
-    public static SudokuBoard loadSampleBoard() {
-        int[][] data;
+    public static SudokuBoard loadBoard() {
+        int[][] initialBoard;
+        int[][] solutionBoard;
         try {
             String filePath = "src/main/resources/org/example/sudoku/sudoku.csv";
             Random rand = new Random();
             int random = rand.nextInt(countLinesInFile(filePath));
-            data = readRandomGridFromCsv(filePath, random); // Wczytanie losowego wiersza z pliku
+            initialBoard = readRandomGridFromCsv(filePath, random,0);
+            solutionBoard = readRandomGridFromCsv(filePath,random, 1);
         } catch (IOException e) {
             e.printStackTrace();
-            data = new int[0][0];
+            initialBoard = new int[9][9];
+            solutionBoard = new int[9][9];
         }
-        return new SudokuBoard(data);
+        return new SudokuBoard(initialBoard,solutionBoard);
     }
-    public static int[][] readRandomGridFromCsv(String filePath, int randomNumber) throws IOException {
-
-        int randomRow = randomNumber;
+    public static int[][] readRandomGridFromCsv(String filePath, int randomNumber, int columnNumber) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             int currentRow = 0;
@@ -40,30 +47,14 @@ public class SudokuBoard {
             // Odczytanie pliku aż do losowego wiersza
             while ((line = br.readLine()) != null) {
                 String[] columns = line.split(";"); // Podzielenie wiersza w kolumny
-                String firstColumn = columns[0];
-                if (currentRow == randomRow) {
+                if (currentRow == randomNumber) {
                     // Kiedy trafimy na wylosowany wiersz zwracamy go jako plansze 9x9
-                    return parseLineToGrid(firstColumn);
+                    return parseLineToGrid(columns[columnNumber]);
                 }
                 currentRow++;
             }
         }
         throw new IOException("Nie udało się odczytać losowego wiersza z pliku.");
-    }
-    public static int[][] readSolutionToRandomGridFromCsv(String filePath, int randomNumber) throws IOException {
-        int randomRow = randomNumber;
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            int currentRow = 0;
-            while ((line = br.readLine()) != null) {
-                String[] columns = line.split(";");
-                String firstColumn = columns[1];
-                if (currentRow == randomRow) {
-                    return parseLineToGrid(firstColumn);
-                }
-            }
-        }
-        throw new IOException("Nie udało się znaleść rozwiązania do planszy.");
     }
     public static int[][] parseLineToGrid(String line) {
         if (line.length() != 81) {
