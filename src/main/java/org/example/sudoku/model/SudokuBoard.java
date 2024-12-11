@@ -11,7 +11,7 @@ public class SudokuBoard {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 this.board[row][col] = new Cell(initialValues[row][col]);
-                this.solutionBoard[row][col] = new Cell(initialValues[row][col]);
+                this.solutionBoard[row][col] = new Cell(solutionBoard[row][col]);
             }
         }
     }
