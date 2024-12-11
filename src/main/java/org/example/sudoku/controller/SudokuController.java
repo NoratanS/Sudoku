@@ -19,10 +19,10 @@ public class SudokuController {
     public SudokuController(SudokuBoard board, GridPane boardGrid) {
         this.board = board;
         this.boardGrid = boardGrid;
-        initializeBoard();
+        initializeBoard(board);
     }
 
-    private void initializeBoard() {
+    private void initializeBoard(SudokuBoard board) {
         boardGrid.getStyleClass().add("grid");
 
         boardGrid.getColumnConstraints().clear();
@@ -166,9 +166,9 @@ public class SudokuController {
         }
     }
 
-    public void reloadBoard() {
+    public void reloadBoard(SudokuBoard newBoard) {
         boardGrid.getChildren().clear();
-        initializeBoard();
+        initializeBoard(newBoard);
         resizeBoard();
         selectedCell = null;
     }

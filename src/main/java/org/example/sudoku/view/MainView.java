@@ -22,8 +22,7 @@ public class MainView {
 
     public void start(Stage primaryStage) {
         GridPane boardGrid = new GridPane();
-        int[][] sampleBoard = SudokuBoard.loadSampleBoard();
-        board = new SudokuBoard(sampleBoard);
+        SudokuBoard board = SudokuBoard.loadBoard();
         controller = new SudokuController(board, boardGrid);
 
         VBox controlPanel = createControlPanel();
@@ -68,8 +67,8 @@ public class MainView {
         Button newGameButton = new Button("New Game");
         newGameButton.setMaxWidth(Double.MAX_VALUE);
         newGameButton.setOnAction(e -> {
-            board.loadSampleBoard();
-            controller.reloadBoard();
+            SudokuBoard newBoard = board.loadBoard();
+            controller.reloadBoard(newBoard);
             timer.reset();
             timer.start();
         });
