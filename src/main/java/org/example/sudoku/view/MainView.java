@@ -63,6 +63,32 @@ public class MainView {
         timerLabel.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
         timer = new Timer(timerLabel);
 
+        // Przycisk "Hint"
+        Button hintButton = new Button("Hint");
+        hintButton.setMaxWidth(Double.MAX_VALUE);
+        hintButton.setOnAction(e -> {
+            controller.provideHint();
+        });
+
+        // Label do wyświetlania informacji o rozwiązaniu
+        Label feedbackLabel = new Label();
+        feedbackLabel.setStyle("-fx-font-size: 14; -fx-text-fill: red;");
+
+        // Przycisk "Check Solution"
+        Button checkSolutionButton = new Button("Check Solution");
+        checkSolutionButton.setMaxWidth(Double.MAX_VALUE);
+        checkSolutionButton.setOnAction(e -> {
+            boolean isCorrect = controller.checkSolution();
+            if (isCorrect) {
+                feedbackLabel.setText("Correct");
+                feedbackLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14;");
+                timer.stop();
+            } else {
+                feedbackLabel.setText("Incorrect");
+                feedbackLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14;");
+            }
+        });
+
         // Przycisk "New Game"
         Button newGameButton = new Button("New Game");
         newGameButton.setMaxWidth(Double.MAX_VALUE);
@@ -71,14 +97,9 @@ public class MainView {
             controller.reloadBoard(newBoard);
             timer.reset();
             timer.start();
+            feedbackLabel.setText("");
         });
 
-        // Przycisk "Hint"
-        Button hintButton = new Button("Hint");
-        hintButton.setMaxWidth(Double.MAX_VALUE);
-        hintButton.setOnAction(e -> {
-            controller.provideHint();
-        });
 
         // Panel cyfr w układzie 3x3
         GridPane digitPanel = new GridPane();
@@ -93,7 +114,7 @@ public class MainView {
             digitPanel.add(digitButton, (i - 1) % 3, (i - 1) / 3);
         }
 
-        controlPanel.getChildren().addAll(timerLabel,newGameButton, hintButton, digitPanel);
+        controlPanel.getChildren().addAll(timerLabel,newGameButton, hintButton,checkSolutionButton,feedbackLabel, digitPanel);
         return controlPanel;
     }
 }

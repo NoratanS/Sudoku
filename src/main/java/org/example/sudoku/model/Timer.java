@@ -34,7 +34,7 @@ public class Timer {
             timeline.play();
         }
     }
-    private void stop(){
+    public void stop(){
         if (timeline != null) {
             timeline.stop();
         }

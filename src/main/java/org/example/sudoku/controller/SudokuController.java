@@ -180,8 +180,6 @@ public class SudokuController {
     public void setDigit(int digit) {
         if (selectedCell != null && selectedCell.isEditable()) {
             selectedCell.setText(String.valueOf(digit));
-            int row = GridPane.getRowIndex(selectedCell);
-            int col = GridPane.getColumnIndex(selectedCell);
         }
     }
 
@@ -224,4 +222,23 @@ public class SudokuController {
             }
         }
     }
+    public boolean checkSolution() {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int userValue = 0;
+                for (var node : boardGrid.getChildren()) {
+                    if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                        TextField cell = (TextField) node;
+                        userValue = cell.getText().isEmpty() ? 0 : Integer.parseInt(cell.getText());
+                        break;
+                    }
+                }
+                if (userValue != board.getSolutionCell(row, col).getValue()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
