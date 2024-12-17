@@ -7,6 +7,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import org.example.sudoku.model.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import java.util.Objects;
 
@@ -190,5 +193,26 @@ public class SudokuController {
         cellField.getStyleClass().add("selected-cell");
 
         selectedCell = cellField;
+    }
+
+    public void provideHint() {
+        List<int[]> emptyCells = new ArrayList<>();
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (board.getCell(row, col).getValue() == 0) {
+                    emptyCells.add(new int[]{row, col});
+                }
+            }
+        }
+
+        if (emptyCells.size() > 0) {
+            Random random = new Random();
+            int[] randomCell = emptyCells.get(random.nextInt(emptyCells.size()));
+            int row = randomCell[0];
+            int col = randomCell[1];
+            int correctValue = board.getSolutionCell(row, col).getValue();
+            board.getCell(row, col).setValue(correctValue);
+            reloadBoard(board);
+        }
     }
 }

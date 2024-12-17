@@ -73,6 +73,13 @@ public class MainView {
             timer.start();
         });
 
+        // Przycisk "Hint"
+        Button hintButton = new Button("Hint");
+        hintButton.setMaxWidth(Double.MAX_VALUE);
+        hintButton.setOnAction(e -> {
+            controller.provideHint();
+        });
+
         // Panel cyfr w układzie 3x3
         GridPane digitPanel = new GridPane();
         digitPanel.setHgap(5);
@@ -86,7 +93,7 @@ public class MainView {
             digitPanel.add(digitButton, (i - 1) % 3, (i - 1) / 3);
         }
 
-        controlPanel.getChildren().addAll(timerLabel,newGameButton, digitPanel);
+        controlPanel.getChildren().addAll(timerLabel,newGameButton, hintButton, digitPanel);
         return controlPanel;
     }
 }
