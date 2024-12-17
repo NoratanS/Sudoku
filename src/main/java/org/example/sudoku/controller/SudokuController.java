@@ -170,6 +170,7 @@ public class SudokuController {
     }
 
     public void reloadBoard(SudokuBoard newBoard) {
+        this.board = newBoard;
         boardGrid.getChildren().clear();
         initializeBoard(newBoard);
         resizeBoard();
