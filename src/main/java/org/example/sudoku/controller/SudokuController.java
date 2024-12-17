@@ -212,7 +212,15 @@ public class SudokuController {
             int col = randomCell[1];
             int correctValue = board.getSolutionCell(row, col).getValue();
             board.getCell(row, col).setValue(correctValue);
-            reloadBoard(board);
+
+            for (var node: boardGrid.getChildren()) {
+                if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                    TextField cellField = (TextField) node;
+                    cellField.setText(String.valueOf(correctValue));
+                    cellField.setEditable(false);
+                    break;
+                }
+            }
         }
     }
 }
