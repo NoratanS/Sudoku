@@ -180,8 +180,6 @@ public class SudokuController {
     public void setDigit(int digit) {
         if (selectedCell != null && selectedCell.isEditable()) {
             selectedCell.setText(String.valueOf(digit));
-            int row = GridPane.getRowIndex(selectedCell);
-            int col = GridPane.getColumnIndex(selectedCell);
         }
     }
 

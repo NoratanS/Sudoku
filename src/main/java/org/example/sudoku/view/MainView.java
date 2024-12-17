@@ -63,16 +63,6 @@ public class MainView {
         timerLabel.setStyle("-fx-font-size: 18; -fx-font-weight: bold;");
         timer = new Timer(timerLabel);
 
-        // Przycisk "New Game"
-        Button newGameButton = new Button("New Game");
-        newGameButton.setMaxWidth(Double.MAX_VALUE);
-        newGameButton.setOnAction(e -> {
-            SudokuBoard newBoard = board.loadBoard();
-            controller.reloadBoard(newBoard);
-            timer.reset();
-            timer.start();
-        });
-
         // Przycisk "Hint"
         Button hintButton = new Button("Hint");
         hintButton.setMaxWidth(Double.MAX_VALUE);
@@ -92,12 +82,23 @@ public class MainView {
             if (isCorrect) {
                 feedbackLabel.setText("Correct");
                 feedbackLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14;");
+                timer.stop();
             } else {
                 feedbackLabel.setText("Incorrect");
                 feedbackLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14;");
             }
         });
 
+        // Przycisk "New Game"
+        Button newGameButton = new Button("New Game");
+        newGameButton.setMaxWidth(Double.MAX_VALUE);
+        newGameButton.setOnAction(e -> {
+            SudokuBoard newBoard = board.loadBoard();
+            controller.reloadBoard(newBoard);
+            timer.reset();
+            timer.start();
+            feedbackLabel.setText("");
+        });
 
 
         // Panel cyfr w układzie 3x3
