@@ -80,6 +80,26 @@ public class MainView {
             controller.provideHint();
         });
 
+        // Label do wyświetlania informacji o rozwiązaniu
+        Label feedbackLabel = new Label();
+        feedbackLabel.setStyle("-fx-font-size: 14; -fx-text-fill: red;");
+
+        // Przycisk "Check Solution"
+        Button checkSolutionButton = new Button("Check Solution");
+        checkSolutionButton.setMaxWidth(Double.MAX_VALUE);
+        checkSolutionButton.setOnAction(e -> {
+            boolean isCorrect = controller.checkSolution();
+            if (isCorrect) {
+                feedbackLabel.setText("Correct");
+                feedbackLabel.setStyle("-fx-text-fill: green; -fx-font-size: 14;");
+            } else {
+                feedbackLabel.setText("Incorrect");
+                feedbackLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14;");
+            }
+        });
+
+
+
         // Panel cyfr w układzie 3x3
         GridPane digitPanel = new GridPane();
         digitPanel.setHgap(5);
@@ -93,7 +113,7 @@ public class MainView {
             digitPanel.add(digitButton, (i - 1) % 3, (i - 1) / 3);
         }
 
-        controlPanel.getChildren().addAll(timerLabel,newGameButton, hintButton, digitPanel);
+        controlPanel.getChildren().addAll(timerLabel,newGameButton, hintButton,checkSolutionButton,feedbackLabel, digitPanel);
         return controlPanel;
     }
 }
